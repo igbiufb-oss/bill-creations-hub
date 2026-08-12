@@ -65,11 +65,12 @@ export function DocHeader({ doc, patch }: Props) {
 
       {/* middle: company + doc type */}
       <div className="text-center">
-        <input
+        <AutoText
           value={doc.companyName}
-          onChange={(e) => patch({ companyName: e.target.value })}
-          className="field-inline company-name w-full"
+          onChange={(v) => patch({ companyName: v })}
+          className="field-inline company-name w-full text-center"
           placeholder="Company name"
+          ariaLabel="Company name"
         />
         <div className="mt-1 flex items-center justify-center gap-2">
           <select
@@ -81,17 +82,19 @@ export function DocHeader({ doc, patch }: Props) {
             <option value="Quotation">Quotation</option>
           </select>
         </div>
-        <input
+        <AutoText
           value={doc.companyAddress}
-          onChange={(e) => patch({ companyAddress: e.target.value })}
+          onChange={(v) => patch({ companyAddress: v })}
           className="field-inline mt-1 w-full text-center text-xs"
           placeholder="Company address"
+          ariaLabel="Company address"
         />
-        <input
+        <AutoText
           value={doc.gstNumber}
-          onChange={(e) => patch({ gstNumber: e.target.value })}
+          onChange={(v) => patch({ gstNumber: v })}
           className="field-inline w-full text-center text-xs"
           placeholder="GST number"
+          ariaLabel="GST number"
         />
       </div>
 
