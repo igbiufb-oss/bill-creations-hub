@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Columns3, Merge, Minus, Plus, Rows3, Split, Trash2 } from "lucide-react";
+import { Columns3, ImagePlus, Merge, Minus, Plus, Rows3, Split, Trash2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AutoText } from "@/components/invoice/AutoText";
 import {
@@ -10,6 +10,7 @@ import {
   normalize,
   removeColumn,
   removeRow,
+  srNumber,
   tableAmount,
   unmergeAt,
   type InvoiceTable,
@@ -43,6 +44,24 @@ export function EditableTable({ table, index, onChange, onRemove }: Props) {
       ),
     });
   };
+  const setImage = (r: number, c: number, image: string | null) => {
+    onChange({
+      ...table,
+      rows: table.rows.map((row, ri) =>
+        ri === r
+          ? { ...row, cells: row.cells.map((cl, ci) => (ci === c ? { ...cl, image } : cl)) }
+          : row,
+      ),
+    });
+  };
+
+  const pickImage = (r: number, c: number, file: File | null) => {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => setImage(r, c, String(reader.result));
+    reader.readAsDataURL(file);
+  };
+
 
   const setColLabel = (c: number, label: string) =>
     onChange({
@@ -193,11 +212,45 @@ export function EditableTable({ table, index, onChange, onRemove }: Props) {
                       }
                     }}
                   >
-                    <AutoText
-                      value={cell.text}
-                      onChange={(v) => setCell(r, c, v)}
-                      className={`cell-input ${c === lastCol ? "text-right tabular-nums" : ""}`}
-                    />
+                    {c === 0 ? (
+                      <span className="sr-cell tabular-nums">{srNumber(table, r) ?? ""}</span>
+                    ) : (
+                      <>
+                        <AutoText
+                          value={cell.text}
+                          onChange={(v) => setCell(r, c, v)}
+                          className={`cell-input ${c === lastCol ? "text-right tabular-nums" : ""}`}
+                        />
+                        {c !== lastCol && (
+                          <div className="cell-media">
+                            {cell.image && (
+                              <img src={cell.image} alt={cell.text || "Item image"} className="cell-image" />
+                            )}
+                            <div className="cell-media-actions print:hidden">
+                              <label className="cell-media-btn">
+                                <ImagePlus className="size-3" />
+                                {cell.image ? "Replace" : "Image"}
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  className="hidden"
+                                  onChange={(e) => pickImage(r, c, e.target.files?.[0] ?? null)}
+                                />
+                              </label>
+                              {cell.image && (
+                                <button
+                                  type="button"
+                                  className="cell-media-btn"
+                                  onClick={() => setImage(r, c, null)}
+                                >
+                                  <X className="size-3" /> Remove
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    )}
                     {c === 0 && (
                       <span
                         className="row-resize print:hidden"

@@ -4,6 +4,8 @@ export type Cell = {
   colSpan: number;
   rowSpan: number;
   hidden: boolean;
+  /** optional picture pasted/uploaded into the cell (data URL) */
+  image?: string | null;
 };
 
 export type Row = { id: string; cells: Cell[]; height?: number };
@@ -89,6 +91,21 @@ export function tableAmount(table: InvoiceTable): number {
     const cell = row.cells[last];
     return cell && !cell.hidden ? sum + num(cell.text) : sum;
   }, 0);
+}
+
+/**
+ * Auto serial number for a row: counts visible Sr. cells above it, so numbering
+ * stays correct after adding/removing rows or merging cells.
+ */
+export function srNumber(table: InvoiceTable, r: number): number | null {
+  const cell = table.rows[r]?.cells[0];
+  if (!cell || cell.hidden) return null;
+  let n = 0;
+  for (let i = 0; i <= r; i++) {
+    const c0 = table.rows[i]?.cells[0];
+    if (c0 && !c0.hidden) n++;
+  }
+  return n;
 }
 
 export const money = (n: number) =>
