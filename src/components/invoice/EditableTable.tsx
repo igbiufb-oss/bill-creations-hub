@@ -44,6 +44,24 @@ export function EditableTable({ table, index, onChange, onRemove }: Props) {
       ),
     });
   };
+  const setImage = (r: number, c: number, image: string | null) => {
+    onChange({
+      ...table,
+      rows: table.rows.map((row, ri) =>
+        ri === r
+          ? { ...row, cells: row.cells.map((cl, ci) => (ci === c ? { ...cl, image } : cl)) }
+          : row,
+      ),
+    });
+  };
+
+  const pickImage = (r: number, c: number, file: File | null) => {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => setImage(r, c, String(reader.result));
+    reader.readAsDataURL(file);
+  };
+
 
   const setColLabel = (c: number, label: string) =>
     onChange({
