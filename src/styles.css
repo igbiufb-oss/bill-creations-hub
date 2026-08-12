@@ -359,6 +359,11 @@
     pointer-events: none;
   }
 
+  .auto-text textarea {
+    resize: none;
+    overflow: hidden;
+  }
+
   .cell-input {
     width: 100%;
     background: transparent;
