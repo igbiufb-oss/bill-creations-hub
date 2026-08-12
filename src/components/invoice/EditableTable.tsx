@@ -193,11 +193,45 @@ export function EditableTable({ table, index, onChange, onRemove }: Props) {
                       }
                     }}
                   >
-                    <AutoText
-                      value={cell.text}
-                      onChange={(v) => setCell(r, c, v)}
-                      className={`cell-input ${c === lastCol ? "text-right tabular-nums" : ""}`}
-                    />
+                    {c === 0 ? (
+                      <span className="sr-cell tabular-nums">{srNumber(table, r) ?? ""}</span>
+                    ) : (
+                      <>
+                        <AutoText
+                          value={cell.text}
+                          onChange={(v) => setCell(r, c, v)}
+                          className={`cell-input ${c === lastCol ? "text-right tabular-nums" : ""}`}
+                        />
+                        {c !== lastCol && (
+                          <div className="cell-media">
+                            {cell.image && (
+                              <img src={cell.image} alt={cell.text || "Item image"} className="cell-image" />
+                            )}
+                            <div className="cell-media-actions print:hidden">
+                              <label className="cell-media-btn">
+                                <ImagePlus className="size-3" />
+                                {cell.image ? "Replace" : "Image"}
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  className="hidden"
+                                  onChange={(e) => pickImage(r, c, e.target.files?.[0] ?? null)}
+                                />
+                              </label>
+                              {cell.image && (
+                                <button
+                                  type="button"
+                                  className="cell-media-btn"
+                                  onClick={() => setImage(r, c, null)}
+                                >
+                                  <X className="size-3" /> Remove
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    )}
                     {c === 0 && (
                       <span
                         className="row-resize print:hidden"
