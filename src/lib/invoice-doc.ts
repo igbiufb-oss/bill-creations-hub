@@ -4,6 +4,8 @@ export type Cell = {
   colSpan: number;
   rowSpan: number;
   hidden: boolean;
+  /** optional picture pasted/uploaded into the cell (data URL) */
+  image?: string | null;
 };
 
 export type Row = { id: string; cells: Cell[]; height?: number };
