@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Columns3, Merge, Minus, Plus, Rows3, Split, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { AutoText } from "@/components/invoice/AutoText";
 import {
   addColumn,
   addRow,
@@ -26,6 +27,7 @@ type Pos = { r: number; c: number };
 export function EditableTable({ table, index, onChange, onRemove }: Props) {
   const [anchor, setAnchor] = useState<Pos | null>(null);
   const [focus, setFocus] = useState<Pos | null>(null);
+  const drag = useRef<null | { kind: "col" | "row"; i: number; start: number; base: number }>(null);
 
   const range = anchor && focus ? normalize(anchor, focus) : null;
   const inRange = (r: number, c: number) =>
@@ -47,6 +49,46 @@ export function EditableTable({ table, index, onChange, onRemove }: Props) {
       ...table,
       columns: table.columns.map((col, ci) => (ci === c ? { ...col, label } : col)),
     });
+
+  const setColWidth = (c: number, width: number) =>
+    onChange({
+      ...table,
+      columns: table.columns.map((col, ci) =>
+        ci === c ? { ...col, width: Math.max(40, Math.round(width)) } : col,
+      ),
+    });
+
+  const setRowHeight = (r: number, height: number) =>
+    onChange({
+      ...table,
+      rows: table.rows.map((row, ri) =>
+        ri === r ? { ...row, height: Math.max(28, Math.round(height)) } : row,
+      ),
+    });
+
+  const startDrag = (
+    e: React.PointerEvent,
+    kind: "col" | "row",
+    i: number,
+    base: number,
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
+    drag.current = { kind, i, start: kind === "col" ? e.clientX : e.clientY, base };
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+  };
+
+  const onMove = (e: React.PointerEvent) => {
+    const d = drag.current;
+    if (!d) return;
+    const delta = (d.kind === "col" ? e.clientX : e.clientY) - d.start;
+    if (d.kind === "col") setColWidth(d.i, d.base + delta);
+    else setRowHeight(d.i, d.base + delta);
+  };
+
+  const endDrag = () => {
+    drag.current = null;
+  };
 
   const lastCol = table.columns.length - 1;
 
@@ -108,7 +150,7 @@ export function EditableTable({ table, index, onChange, onRemove }: Props) {
         </Button>
       </div>
 
-      <table className="doc-table">
+      <table className="doc-table" onPointerMove={onMove} onPointerUp={endDrag}>
         <colgroup>
           {table.columns.map((col) => (
             <col key={col.id} style={{ width: col.width }} />
@@ -123,13 +165,18 @@ export function EditableTable({ table, index, onChange, onRemove }: Props) {
                   onChange={(e) => setColLabel(c, e.target.value)}
                   className="cell-input font-semibold"
                 />
+                <span
+                  className="col-resize print:hidden"
+                  title="Drag to resize column"
+                  onPointerDown={(e) => startDrag(e, "col", c, col.width)}
+                />
               </th>
             ))}
           </tr>
         </thead>
         <tbody>
           {table.rows.map((row, r) => (
-            <tr key={row.id}>
+            <tr key={row.id} style={row.height ? { height: row.height } : undefined}>
               {row.cells.map((cell, c) =>
                 cell.hidden ? null : (
                   <td
@@ -146,12 +193,20 @@ export function EditableTable({ table, index, onChange, onRemove }: Props) {
                       }
                     }}
                   >
-                    <textarea
-                      rows={1}
+                    <AutoText
                       value={cell.text}
-                      onChange={(e) => setCell(r, c, e.target.value)}
+                      onChange={(v) => setCell(r, c, v)}
                       className={`cell-input ${c === lastCol ? "text-right tabular-nums" : ""}`}
                     />
+                    {c === 0 && (
+                      <span
+                        className="row-resize print:hidden"
+                        title="Drag to resize row"
+                        onPointerDown={(e) =>
+                          startDrag(e, "row", r, row.height ?? (e.currentTarget.parentElement?.offsetHeight ?? 32))
+                        }
+                      />
+                    )}
                   </td>
                 ),
               )}
@@ -166,7 +221,8 @@ export function EditableTable({ table, index, onChange, onRemove }: Props) {
         </tbody>
       </table>
       <p className="mt-1 text-[11px] text-muted-foreground print:hidden">
-        Tip: click a cell, then shift-click another to select a block and merge it.
+        Tip: click a cell then shift-click another to select a block and merge it. Drag the edge of a
+        column header or the bottom of the first cell in a row to resize.
       </p>
     </section>
   );
