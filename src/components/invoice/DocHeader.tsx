@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { ImagePlus, X } from "lucide-react";
+import { AutoText } from "@/components/invoice/AutoText";
 import type { InvoiceDoc } from "@/lib/invoice-doc";
 
 type Props = {
