@@ -157,10 +157,12 @@ export function mergeRange(table: InvoiceTable, range: Range): InvoiceTable {
       return { ...cell, text: "", hidden: true, colSpan: 1, rowSpan: 1 };
     }),
   }));
-  const anchor = rows[r1].cells[c1];
+  const anchorRow = rows[r1];
+  const anchor = anchorRow?.cells[c1];
+  if (!anchorRow || !anchor) return { ...table, rows };
   rows[r1] = {
-    ...rows[r1],
-    cells: rows[r1].cells.map((cell, c) =>
+    ...anchorRow,
+    cells: anchorRow.cells.map<Cell>((cell, c) =>
       c === c1
         ? {
             ...anchor,
