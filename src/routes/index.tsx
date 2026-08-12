@@ -4,6 +4,7 @@ import { Download, FilePlus2, Plus, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DocHeader } from "@/components/invoice/DocHeader";
 import { EditableTable } from "@/components/invoice/EditableTable";
+import { AutoText } from "@/components/invoice/AutoText";
 import {
   emptyDoc,
   makeTable,
