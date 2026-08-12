@@ -443,6 +443,16 @@
   .cell-input {
     border-color: transparent !important;
     background: transparent !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: pre-wrap !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  /* nothing may be clipped in the PDF */
+  input.field-inline,
+  input.cell-input {
+    height: auto !important;
   }
 
   .logo-slot {
