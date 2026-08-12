@@ -93,6 +93,21 @@ export function tableAmount(table: InvoiceTable): number {
   }, 0);
 }
 
+/**
+ * Auto serial number for a row: counts visible Sr. cells above it, so numbering
+ * stays correct after adding/removing rows or merging cells.
+ */
+export function srNumber(table: InvoiceTable, r: number): number | null {
+  const cell = table.rows[r]?.cells[0];
+  if (!cell || cell.hidden) return null;
+  let n = 0;
+  for (let i = 0; i <= r; i++) {
+    const c0 = table.rows[i]?.cells[0];
+    if (c0 && !c0.hidden) n++;
+  }
+  return n;
+}
+
 export const money = (n: number) =>
   n.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
