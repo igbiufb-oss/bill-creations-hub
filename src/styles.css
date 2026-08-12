@@ -63,25 +63,25 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
+  --background: oklch(0.977 0.008 95);
+  --foreground: oklch(0.24 0.03 155);
+  --card: oklch(0.995 0.004 95);
+  --card-foreground: oklch(0.24 0.03 155);
+  --popover: oklch(0.995 0.004 95);
+  --popover-foreground: oklch(0.24 0.03 155);
+  --primary: oklch(0.4 0.078 158);
+  --primary-foreground: oklch(0.985 0.008 95);
+  --secondary: oklch(0.945 0.018 120);
+  --secondary-foreground: oklch(0.3 0.05 158);
+  --muted: oklch(0.945 0.012 100);
+  --muted-foreground: oklch(0.5 0.02 150);
+  --accent: oklch(0.9 0.06 130);
+  --accent-foreground: oklch(0.3 0.05 158);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --border: oklch(0.885 0.015 130);
+  --input: oklch(0.885 0.015 130);
+  --ring: oklch(0.55 0.08 158);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -140,5 +140,264 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: "Work Sans", ui-sans-serif, system-ui, sans-serif;
   }
 }
+
+@layer components {
+  .brand {
+    font-family: "Instrument Serif", ui-serif, Georgia, serif;
+    font-size: 1.35rem;
+    letter-spacing: 0.01em;
+    color: var(--color-primary);
+  }
+
+  .app-bar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-bottom: 1px solid var(--color-border);
+    background: color-mix(in oklch, var(--color-background) 92%, transparent);
+    backdrop-filter: blur(8px);
+    padding: 0.6rem 1.25rem;
+  }
+
+  .paper {
+    margin: 1.5rem auto;
+    max-width: 900px;
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 18px 50px -30px oklch(0.35 0.06 150 / 0.45);
+    padding: 2.5rem 2.75rem 3rem;
+  }
+
+  .doc-header {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr;
+    align-items: start;
+    gap: 1rem;
+    border-bottom: 2px solid var(--color-primary);
+    padding-bottom: 1rem;
+  }
+
+  .company-name {
+    font-family: "Instrument Serif", ui-serif, Georgia, serif;
+    font-size: 1.85rem;
+    line-height: 1.1;
+    text-align: center;
+    color: var(--color-primary);
+  }
+
+  .doc-type-select {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    text-align: center;
+    background: var(--color-secondary);
+    border-radius: 999px;
+    padding: 0.15rem 0.6rem;
+    width: auto;
+  }
+
+  .logo-slot {
+    position: relative;
+    display: flex;
+    height: 72px;
+    width: 120px;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    border: 1px dashed var(--color-border);
+  }
+
+  .logo-slot img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+  }
+
+  .logo-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.65rem;
+    color: var(--color-muted-foreground);
+  }
+
+  .logo-remove {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    border-radius: 999px;
+    background: var(--color-secondary);
+    padding: 2px;
+  }
+
+  .header-field {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--color-muted-foreground);
+  }
+
+  .field-inline {
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    padding: 0.15rem 0.35rem;
+    outline: none;
+    color: inherit;
+  }
+
+  .field-inline:hover {
+    border-color: var(--color-border);
+  }
+
+  .field-inline:focus {
+    border-color: var(--color-ring);
+    background: var(--color-secondary);
+  }
+
+  .block-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--color-muted-foreground);
+    margin-bottom: 0.25rem;
+  }
+
+  .client-block {
+    margin: 1.5rem 0 2rem;
+    max-width: 26rem;
+  }
+
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.15rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 0.15rem;
+  }
+
+  .doc-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 0.85rem;
+  }
+
+  .doc-table th,
+  .doc-table td {
+    border: 1px solid var(--color-border);
+    vertical-align: top;
+    padding: 0;
+  }
+
+  .doc-table thead th {
+    background: var(--color-secondary);
+    text-align: left;
+  }
+
+  .doc-table td[data-selected="true"] {
+    background: color-mix(in oklch, var(--color-accent) 70%, transparent);
+  }
+
+  .cell-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    resize: none;
+    padding: 0.35rem 0.5rem;
+    font: inherit;
+    color: inherit;
+    field-sizing: content;
+    min-height: 2rem;
+  }
+
+  .doc-table .total-row td {
+    background: var(--color-secondary);
+    font-weight: 600;
+    padding: 0.35rem 0.5rem;
+  }
+
+  .totals {
+    margin-left: auto;
+    margin-top: 2rem;
+    width: 20rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .totals-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.4rem 0;
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .totals-row.grand {
+    border-bottom: none;
+    border-top: 2px solid var(--color-primary);
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--color-primary);
+  }
+}
+
+@media print {
+  @page {
+    margin: 14mm;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  .paper {
+    margin: 0;
+    max-width: none;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    padding-top: 130px;
+  }
+
+  /* Word-style repeating header on every printed page */
+  .doc-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+  }
+
+  .doc-table-block {
+    break-inside: auto;
+  }
+
+  .doc-table tr {
+    break-inside: avoid;
+  }
+
+  .field-inline,
+  .cell-input {
+    border-color: transparent !important;
+    background: transparent !important;
+  }
+
+  .logo-slot {
+    border: none;
+  }
+}
+
