@@ -68,7 +68,7 @@ export function DocHeader({ doc, patch }: Props) {
         <input
           value={doc.companyName}
           onChange={(e) => patch({ companyName: e.target.value })}
-          className="field-inline company-name"
+          className="field-inline company-name w-full"
           placeholder="Company name"
         />
         <div className="mt-1 flex items-center justify-center gap-2">
@@ -84,13 +84,13 @@ export function DocHeader({ doc, patch }: Props) {
         <input
           value={doc.companyAddress}
           onChange={(e) => patch({ companyAddress: e.target.value })}
-          className="field-inline mt-1 text-center text-xs"
+          className="field-inline mt-1 w-full text-center text-xs"
           placeholder="Company address"
         />
         <input
           value={doc.gstNumber}
           onChange={(e) => patch({ gstNumber: e.target.value })}
-          className="field-inline text-center text-xs"
+          className="field-inline w-full text-center text-xs"
           placeholder="GST number"
         />
       </div>
