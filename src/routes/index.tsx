@@ -194,12 +194,12 @@ function Builder() {
 
         <section className="mt-8">
           <h2 className="block-label">Notes / Terms</h2>
-          <textarea
+          <AutoText
             value={doc.notes}
-            onChange={(e) => patch({ notes: e.target.value })}
-            className="field-inline w-full resize-none text-sm"
-            rows={3}
+            onChange={(v) => patch({ notes: v })}
+            className="field-inline w-full text-sm"
             placeholder="Payment terms, bank details, thank you note"
+            ariaLabel="Notes and terms"
           />
         </section>
       </div>
