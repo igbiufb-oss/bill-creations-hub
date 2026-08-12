@@ -157,6 +157,7 @@
     top: 0;
     z-index: 20;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 0.75rem;
     border-bottom: 1px solid var(--color-border);
@@ -296,9 +297,11 @@
 
   .doc-table th,
   .doc-table td {
+    position: relative;
     border: 1px solid var(--color-border);
     vertical-align: top;
     padding: 0;
+    overflow-wrap: anywhere;
   }
 
   .doc-table thead th {
@@ -310,17 +313,69 @@
     background: color-mix(in oklch, var(--color-accent) 70%, transparent);
   }
 
+  .col-resize {
+    position: absolute;
+    top: 0;
+    right: -3px;
+    z-index: 5;
+    height: 100%;
+    width: 7px;
+    cursor: col-resize;
+    touch-action: none;
+  }
+
+  .col-resize:hover {
+    background: color-mix(in oklch, var(--color-primary) 45%, transparent);
+  }
+
+  .row-resize {
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    z-index: 5;
+    height: 7px;
+    width: 100%;
+    cursor: row-resize;
+    touch-action: none;
+  }
+
+  .row-resize:hover {
+    background: color-mix(in oklch, var(--color-primary) 45%, transparent);
+  }
+
+  /* auto-growing text fields: ghost sets the height, nothing gets clipped */
+  .auto-text {
+    display: grid;
+  }
+
+  .auto-text > * {
+    grid-area: 1 / 1;
+  }
+
+  .auto-text-ghost {
+    visibility: hidden;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    pointer-events: none;
+  }
+
+  .auto-text textarea {
+    resize: none;
+    overflow: hidden;
+  }
+
   .cell-input {
     width: 100%;
     background: transparent;
     border: none;
     outline: none;
     resize: none;
+    overflow: hidden;
     padding: 0.35rem 0.5rem;
     font: inherit;
     color: inherit;
-    field-sizing: content;
-    min-height: 2rem;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
   }
 
   .doc-table .total-row td {
@@ -370,7 +425,7 @@
     border: none;
     box-shadow: none;
     padding: 0;
-    padding-top: 130px;
+    padding-top: 165px;
   }
 
   /* Word-style repeating header on every printed page */
@@ -394,6 +449,16 @@
   .cell-input {
     border-color: transparent !important;
     background: transparent !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: pre-wrap !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  /* nothing may be clipped in the PDF */
+  input.field-inline,
+  input.cell-input {
+    height: auto !important;
   }
 
   .logo-slot {

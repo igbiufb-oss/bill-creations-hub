@@ -6,7 +6,7 @@ export type Cell = {
   hidden: boolean;
 };
 
-export type Row = { id: string; cells: Cell[] };
+export type Row = { id: string; cells: Cell[]; height?: number };
 
 export type Column = { id: string; label: string; width: number };
 

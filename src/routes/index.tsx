@@ -4,6 +4,7 @@ import { Download, FilePlus2, Plus, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DocHeader } from "@/components/invoice/DocHeader";
 import { EditableTable } from "@/components/invoice/EditableTable";
+import { AutoText } from "@/components/invoice/AutoText";
 import {
   emptyDoc,
   makeTable,
@@ -118,18 +119,19 @@ function Builder() {
 
         <section className="client-block">
           <h2 className="block-label">Bill to</h2>
-          <input
+          <AutoText
             value={doc.clientName}
-            onChange={(e) => patch({ clientName: e.target.value })}
+            onChange={(v) => patch({ clientName: v })}
             className="field-inline w-full text-base font-medium"
             placeholder="Client name"
+            ariaLabel="Client name"
           />
-          <textarea
+          <AutoText
             value={doc.clientAddress}
-            onChange={(e) => patch({ clientAddress: e.target.value })}
-            className="field-inline w-full resize-none text-sm"
-            rows={3}
+            onChange={(v) => patch({ clientAddress: v })}
+            className="field-inline w-full text-sm"
             placeholder="Client address, GSTIN, phone"
+            ariaLabel="Client address"
           />
         </section>
 
@@ -147,6 +149,20 @@ function Builder() {
               }
             />
           ))}
+        </div>
+
+        <div className="mt-4 flex items-center gap-3 print:hidden">
+          <Button
+            variant="secondary"
+            onClick={() =>
+              patch({ tables: [...doc.tables, makeTable(`Items ${doc.tables.length + 1}`)] })
+            }
+          >
+            <Plus /> Add another table
+          </Button>
+          <span className="text-xs text-muted-foreground">
+            {doc.tables.length} table{doc.tables.length === 1 ? "" : "s"} in this document
+          </span>
         </div>
 
         <section className="totals">
@@ -178,12 +194,12 @@ function Builder() {
 
         <section className="mt-8">
           <h2 className="block-label">Notes / Terms</h2>
-          <textarea
+          <AutoText
             value={doc.notes}
-            onChange={(e) => patch({ notes: e.target.value })}
-            className="field-inline w-full resize-none text-sm"
-            rows={3}
+            onChange={(v) => patch({ notes: v })}
+            className="field-inline w-full text-sm"
             placeholder="Payment terms, bank details, thank you note"
+            ariaLabel="Notes and terms"
           />
         </section>
       </div>
