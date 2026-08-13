@@ -13,7 +13,14 @@ type Props = {
  * same font metrics) sets the height, so nothing is ever clipped — on screen or
  * in print/PDF.
  */
-export function AutoText({ value, onChange, className = "", placeholder, ariaLabel }: Props) {
+export function AutoText({
+  value,
+  onChange,
+  className = "",
+  placeholder,
+  ariaLabel,
+  onEnter,
+}: Props) {
   return (
     <div className="auto-text">
       <span className={`auto-text-ghost ${className}`} aria-hidden="true">
