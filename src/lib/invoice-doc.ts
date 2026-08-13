@@ -79,6 +79,7 @@ export function emptyDoc(): InvoiceDoc {
     tables: [makeTable()],
     gstRate: 18,
     notes: "",
+    noteSections: [makeNoteSection("Notes / Terms")],
   };
 }
 
