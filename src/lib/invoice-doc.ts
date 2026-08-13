@@ -20,6 +20,8 @@ export type InvoiceTable = {
   ownTotal: boolean;
 };
 
+export type NoteSection = { id: string; title: string; items: string[] };
+
 export type InvoiceDoc = {
   docType: "Invoice" | "Quotation";
   logo: string | null;
