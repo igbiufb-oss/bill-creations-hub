@@ -33,6 +33,12 @@ export function AutoText({
         aria-label={ariaLabel}
         placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
+        onKeyDown={(e) => {
+          if (onEnter && e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            onEnter();
+          }
+        }}
         className={className}
       />
     </div>
