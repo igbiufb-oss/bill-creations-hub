@@ -4,6 +4,8 @@ type Props = {
   className?: string;
   placeholder?: string;
   ariaLabel?: string;
+  /** when set, Enter does not insert a newline but calls this instead */
+  onEnter?: () => void;
 };
 
 /**
