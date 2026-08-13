@@ -5,8 +5,10 @@ import { Button } from "@/components/ui/button";
 import { DocHeader } from "@/components/invoice/DocHeader";
 import { EditableTable } from "@/components/invoice/EditableTable";
 import { AutoText } from "@/components/invoice/AutoText";
+import { NotesBlock } from "@/components/invoice/NotesBlock";
 import {
   emptyDoc,
+  makeNoteSection,
   makeTable,
   money,
   tableAmount,
@@ -46,7 +48,21 @@ function Builder() {
   useEffect(() => {
     try {
       const raw = localStorage.getItem(KEY);
-      if (raw) setDoc({ ...emptyDoc(), ...(JSON.parse(raw) as InvoiceDoc) });
+      if (raw) {
+        const saved = JSON.parse(raw) as InvoiceDoc;
+        const merged = { ...emptyDoc(), ...saved };
+        if (!merged.noteSections?.length) {
+          merged.noteSections = [
+            {
+              ...makeNoteSection(),
+              items: (saved.notes || "").split("\n").length
+                ? (saved.notes || "").split("\n")
+                : [""],
+            },
+          ];
+        }
+        setDoc(merged);
+      }
     } catch {
       /* ignore corrupt draft */
     }
@@ -118,7 +134,6 @@ function Builder() {
         <DocHeader doc={doc} patch={patch} />
 
         <section className="client-block">
-          <h2 className="block-label">Bill to</h2>
           <AutoText
             value={doc.clientName}
             onChange={(v) => patch({ clientName: v })}
@@ -192,16 +207,38 @@ function Builder() {
           </div>
         </section>
 
-        <section className="mt-8">
-          <h2 className="block-label">Notes / Terms</h2>
-          <AutoText
-            value={doc.notes}
-            onChange={(v) => patch({ notes: v })}
-            className="field-inline w-full text-sm"
-            placeholder="Payment terms, bank details, thank you note"
-            ariaLabel="Notes and terms"
-          />
-        </section>
+        <div className="notes-wrap">
+          {doc.noteSections.map((section, i) => (
+            <NotesBlock
+              key={section.id}
+              section={section}
+              index={i}
+              onChange={(s) =>
+                patch({
+                  noteSections: doc.noteSections.map((old) => (old.id === s.id ? s : old)),
+                })
+              }
+              onRemove={() =>
+                patch({ noteSections: doc.noteSections.filter((old) => old.id !== section.id) })
+              }
+            />
+          ))}
+          <Button
+            variant="secondary"
+            size="sm"
+            className="print:hidden"
+            onClick={() =>
+              patch({
+                noteSections: [
+                  ...doc.noteSections,
+                  makeNoteSection(`Notes / Terms ${doc.noteSections.length + 1}`),
+                ],
+              })
+            }
+          >
+            <Plus /> Add notes section
+          </Button>
+        </div>
       </div>
     </main>
   );
