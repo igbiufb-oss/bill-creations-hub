@@ -36,6 +36,7 @@ export type InvoiceDoc = {
   tables: InvoiceTable[];
   gstRate: number;
   notes: string;
+  noteSections: NoteSection[];
 };
 
 export const uid = () => Math.random().toString(36).slice(2, 10);
