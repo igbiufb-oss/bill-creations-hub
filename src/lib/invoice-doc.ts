@@ -64,6 +64,12 @@ export function makeTable(title = "Items"): InvoiceTable {
   return { id: uid(), title, columns, rows, ownTotal: false };
 }
 
+export const makeNoteSection = (title = "Notes / Terms"): NoteSection => ({
+  id: uid(),
+  title,
+  items: [""],
+});
+
 export function emptyDoc(): InvoiceDoc {
   return {
     docType: "Invoice",
