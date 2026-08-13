@@ -4,6 +4,8 @@ type Props = {
   className?: string;
   placeholder?: string;
   ariaLabel?: string;
+  /** when set, Enter does not insert a newline but calls this instead */
+  onEnter?: () => void;
 };
 
 /**
@@ -11,7 +13,14 @@ type Props = {
  * same font metrics) sets the height, so nothing is ever clipped — on screen or
  * in print/PDF.
  */
-export function AutoText({ value, onChange, className = "", placeholder, ariaLabel }: Props) {
+export function AutoText({
+  value,
+  onChange,
+  className = "",
+  placeholder,
+  ariaLabel,
+  onEnter,
+}: Props) {
   return (
     <div className="auto-text">
       <span className={`auto-text-ghost ${className}`} aria-hidden="true">
@@ -24,6 +33,12 @@ export function AutoText({ value, onChange, className = "", placeholder, ariaLab
         aria-label={ariaLabel}
         placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
+        onKeyDown={(e) => {
+          if (onEnter && e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            onEnter();
+          }
+        }}
         className={className}
       />
     </div>

@@ -20,6 +20,8 @@ export type InvoiceTable = {
   ownTotal: boolean;
 };
 
+export type NoteSection = { id: string; title: string; items: string[] };
+
 export type InvoiceDoc = {
   docType: "Invoice" | "Quotation";
   logo: string | null;
@@ -34,6 +36,7 @@ export type InvoiceDoc = {
   tables: InvoiceTable[];
   gstRate: number;
   notes: string;
+  noteSections: NoteSection[];
 };
 
 export const uid = () => Math.random().toString(36).slice(2, 10);
@@ -61,6 +64,12 @@ export function makeTable(title = "Items"): InvoiceTable {
   return { id: uid(), title, columns, rows, ownTotal: false };
 }
 
+export const makeNoteSection = (title = "Notes / Terms"): NoteSection => ({
+  id: uid(),
+  title,
+  items: [""],
+});
+
 export function emptyDoc(): InvoiceDoc {
   return {
     docType: "Invoice",
@@ -76,6 +85,7 @@ export function emptyDoc(): InvoiceDoc {
     tables: [makeTable()],
     gstRate: 18,
     notes: "",
+    noteSections: [makeNoteSection("Notes / Terms")],
   };
 }
 
