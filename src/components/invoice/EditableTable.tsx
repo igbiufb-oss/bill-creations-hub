@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Columns3, ImagePlus, Merge, Minus, Plus, Rows3, Split, Trash2, X } from "lucide-react";
+import { Columns3, ImagePlus, Merge, Minus, Plus, Rows3, Split, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AutoText } from "@/components/invoice/AutoText";
 import {
