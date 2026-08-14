@@ -14,7 +14,135 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      documents: {
+        Row: {
+          client_name: string | null
+          created_at: string
+          data: Json
+          doc_date: string | null
+          doc_number: string | null
+          doc_type: string
+          id: string
+          title: string
+          total: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          client_name?: string | null
+          created_at?: string
+          data?: Json
+          doc_date?: string | null
+          doc_number?: string | null
+          doc_type?: string
+          id?: string
+          title?: string
+          total?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          client_name?: string | null
+          created_at?: string
+          data?: Json
+          doc_date?: string | null
+          doc_number?: string | null
+          doc_type?: string
+          id?: string
+          title?: string
+          total?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          company_address: string | null
+          company_name: string | null
+          created_at: string
+          email: string | null
+          full_name: string | null
+          gst_number: string | null
+          id: string
+          logo: string | null
+          updated_at: string
+        }
+        Insert: {
+          company_address?: string | null
+          company_name?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          gst_number?: string | null
+          id: string
+          logo?: string | null
+          updated_at?: string
+        }
+        Update: {
+          company_address?: string | null
+          company_name?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          gst_number?: string | null
+          id?: string
+          logo?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      team_members: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          name: string | null
+          owner_id: string
+          role: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          name?: string | null
+          owner_id: string
+          role?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string | null
+          owner_id?: string
+          role?: string
+        }
+        Relationships: []
+      }
+      user_settings: {
+        Row: {
+          email_notifications: boolean
+          language: string
+          theme: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          email_notifications?: boolean
+          language?: string
+          theme?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          email_notifications?: boolean
+          language?: string
+          theme?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
