@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Columns3, ImagePlus, Merge, Minus, Plus, Rows3, Split, Trash2, X } from "lucide-react";
+import { Columns3, ImagePlus, Merge, Minus, Plus, Rows3, Split, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AutoText } from "@/components/invoice/AutoText";
 import {
@@ -222,33 +222,41 @@ export function EditableTable({ table, index, onChange, onRemove }: Props) {
                           className={`cell-input ${c === lastCol ? "text-right tabular-nums" : ""}`}
                         />
                         {c !== lastCol && (
-                          <div className="cell-media">
+                          <>
+                            <label
+                              className="cell-image-add print:hidden"
+                              title={cell.image ? "Replace image" : "Add image"}
+                            >
+                              <ImagePlus className="size-3.5" />
+                              <input
+                                type="file"
+                                accept="image/*"
+                                className="hidden"
+                                onChange={(e) => pickImage(r, c, e.target.files?.[0] ?? null)}
+                              />
+                            </label>
                             {cell.image && (
-                              <img src={cell.image} alt={cell.text || "Item image"} className="cell-image" />
+                              <div className="cell-media">
+                                <div className="cell-image-wrap">
+                                  <img
+                                    src={cell.image}
+                                    alt={cell.text || "Item image"}
+                                    className="cell-image"
+                                  />
+                                  <button
+                                    type="button"
+                                    className="cell-image-del print:hidden"
+                                    title="Delete image"
+                                    onClick={() => setImage(r, c, null)}
+                                  >
+                                    <Trash2 className="size-3" />
+                                  </button>
+                                </div>
+                              </div>
                             )}
-                            <div className="cell-media-actions print:hidden">
-                              <label className="cell-media-btn">
-                                <ImagePlus className="size-3" />
-                                {cell.image ? "Replace" : "Image"}
-                                <input
-                                  type="file"
-                                  accept="image/*"
-                                  className="hidden"
-                                  onChange={(e) => pickImage(r, c, e.target.files?.[0] ?? null)}
-                                />
-                              </label>
-                              {cell.image && (
-                                <button
-                                  type="button"
-                                  className="cell-media-btn"
-                                  onClick={() => setImage(r, c, null)}
-                                >
-                                  <X className="size-3" /> Remove
-                                </button>
-                              )}
-                            </div>
-                          </div>
+                          </>
                         )}
+
                       </>
                     )}
                     {c === 0 && (
