@@ -426,7 +426,7 @@
   .cell-image-add {
     position: absolute;
     top: 2px;
-    right: 2px;
+    right: 10px;
     z-index: 4;
     display: inline-flex;
     align-items: center;
